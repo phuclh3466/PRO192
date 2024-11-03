@@ -4,10 +4,6 @@
  */
 package com.mycompany.assigment;
 import java.io.*;
-/**
- *
- * @author PC
- */
 public class MeasurementObservationType extends ObservationType implements Serializable {
     private String unit;
 
