@@ -70,14 +70,12 @@ Observations:
 ===== PATIENT RECORD SYSTEM =====
 OBSERVATION TYPES:
 >> MeasurementObservationType[code: T100, name: Blood Pressure,unit: psi]
->> CategoryObservationType[code: T200, name: blood type, categories: |Group A|Gr
-oup B1|Group B2|]
+>> CategoryObservationType[code: T200, name: blood type, categories: |Group A|Group B1|Group B2|]
 
 PATIENTS:
 >> Patient id: P100, name: Smith
 Observations:
-- MeasurementObservation[observationType: MeasurementObservationType[code: T100,
- name: Blood Pressure,unit: psi], value: 120.0]
+- MeasurementObservation[observationType: MeasurementObservationType[code: T100,name: Blood Pressure,unit: psi], value: 120.0]
 
 >> Patient id: P200, name: Adams
 Observations:
@@ -86,16 +84,13 @@ Observations:
 ===== PATIENT RECORD SYSTEM =====
 OBSERVATION TYPES:
 >> MeasurementObservationType[code: T100, name: Blood Pressure,unit: psi]
->> CategoryObservationType[code: T200, name: blood type, categories: |Group A|Gr
-oup B1|Group B2|]
+>> CategoryObservationType[code: T200, name: blood type, categories: |Group A|Group B1|Group B2|]
 
 PATIENTS:
 >> Patient id: P100, name: Smith
 Observations:
-- MeasurementObservation[observationType: MeasurementObservationType[code: T100,
- name: Blood Pressure,unit: psi], value: 120.0]
-- CategoryObservation[observationType: CategoryObservationType[code: T200, name:
- blood type, categories: |Group A|Group B1|Group B2|], value: Group A]
+- MeasurementObservation[observationType: MeasurementObservationType[code: T100,name: Blood Pressure,unit: psi], value: 120.0]
+- CategoryObservation[observationType: CategoryObservationType[code: T200, name: blood type, categories: |Group A|Group B1|Group B2|], value: Group A]
 
 >> Patient id: P200, name: Adams
 Observations:
