@@ -3,14 +3,17 @@
  */
 
 package com.mycompany.assigment;
-import java.io.*;
+
 /**
  *
  * @author PC
  */
+import java.io.*;
+import java.io.Serializable;
+
 public abstract class ObservationType implements Serializable {
-    private String code;
-    private String name;
+    protected String code;
+    protected String name;
 
     public ObservationType(String code, String name) {
         this.code = code;

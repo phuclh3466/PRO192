@@ -8,20 +8,24 @@ import java.io.*;
  *
  * @author PC
  */
-public class CategoryObservationType extends ObservationType implements Serializable {
-    private String[] categories;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class CategoryObservationType extends ObservationType {
+    private List<String> categories;
 
     public CategoryObservationType(String code, String name, String[] categories) {
         super(code, name);
-        this.categories = categories;
+        this.categories = new ArrayList<>(Arrays.asList(categories));
     }
 
-    public String[] getCategories() {
+    public List<String> getCategories() {
         return categories;
     }
 
     @Override
     public String toString() {
-        return "CategoryObservationType [code=" + getCode() + ", name=" + getName() + ", categories=" + String.join(", ", categories) + "]";
+        return "CategoryObservationType[code: " + code + ", name: " + name + ", categories: " + categories + "]";
     }
 }

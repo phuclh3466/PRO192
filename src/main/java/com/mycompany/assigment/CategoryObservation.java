@@ -8,25 +8,14 @@ import java.io.*;
  *
  * @author PC
  */
-public class CategoryObservation extends Observation implements Serializable {
+public class CategoryObservation extends Observation {
     private String value;
 
     public CategoryObservation(CategoryObservationType observationType, String value) throws Exception {
         super(observationType);
-
-        // Validate that the value is within the allowed categories
-        boolean valid = false;
-        for (String category : observationType.getCategories()) {
-            if (category.equals(value)) {
-                valid = true;
-                break;
-            }
+        if (!observationType.getCategories().contains(value)) {
+            throw new Exception("Invalid category value");
         }
-
-        if (!valid) {
-            throw new Exception("Invalid category value for this observation type.");
-        }
-
         this.value = value;
     }
 
@@ -36,6 +25,6 @@ public class CategoryObservation extends Observation implements Serializable {
 
     @Override
     public String toString() {
-        return "CategoryObservation [type=" + getObservationType().getName() + ", value=" + value + "]";
+        return "CategoryObservation[observationType: " + observationType + ", value: " + value + "]";
     }
 }

@@ -4,11 +4,12 @@
  */
 package com.mycompany.assigment;
 import java.io.*;
+import java.io.Serializable;
 /**
  *
  * @author PC
  */
-public class MeasurementObservation extends Observation implements Serializable {
+public class MeasurementObservation extends Observation {
     private double value;
 
     public MeasurementObservation(MeasurementObservationType observationType, double value) {
@@ -22,6 +23,6 @@ public class MeasurementObservation extends Observation implements Serializable 
 
     @Override
     public String toString() {
-        return "MeasurementObservation [type=" + getObservationType().getName() + ", value=" + value + "]";
+        return "MeasurementObservation[observationType: " + observationType + ", value: " + value + "]";
     }
 }

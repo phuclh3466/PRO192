@@ -3,117 +3,108 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.assigment;
-import java.io.*;
 /**
  *
  * @author PC
  */
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class PatientRecordSystem implements Serializable {
-    private static final long serialVersionUID = 1L; // Added for serialization
-    private Patient[] patients;
-    private ObservationType[] observationTypes;
-    private int patientCount;
-    private int observationTypeCount;
+    private List<ObservationType> observationTypes;
+    private List<Patient> patients;
 
     public PatientRecordSystem() {
-        patients = new Patient[100];
-        observationTypes = new ObservationType[50];
-        patientCount = 0;
-        observationTypeCount = 0;
+        observationTypes = new ArrayList<>();
+        patients = new ArrayList<>();
     }
 
-    // Method to save all the data to a file
-    public void saveData(String filename) throws IOException {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-            out.writeObject(this); // Save the entire system state
-        }
-    }
-
-    // Method to load data from a file
-    public static PatientRecordSystem loadData(String filename) throws IOException, ClassNotFoundException {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-            return (PatientRecordSystem) in.readObject();
-        }
-    }
-    
-    // Add a new measurement observation type
     public void addMeasurementObservationType(String code, String name, String unit) throws Exception {
-        validateUniqueObservationTypeCode(code);
-        observationTypes[observationTypeCount++] = new MeasurementObservationType(code, name, unit);
+        for (ObservationType type : observationTypes) {
+            if (type.getCode().equals(code)) {
+                throw new Exception("Observation type with this code already exists");
+            }
+        }
+        observationTypes.add(new MeasurementObservationType(code, name, unit));
     }
 
-    // Add a new category observation type
     public void addCategoryObservationType(String code, String name, String[] categories) throws Exception {
-        validateUniqueObservationTypeCode(code);
-        observationTypes[observationTypeCount++] = new CategoryObservationType(code, name, categories);
+        for (ObservationType type : observationTypes) {
+            if (type.getCode().equals(code)) {
+                throw new Exception("Observation type with this code already exists");
+            }
+        }
+        observationTypes.add(new CategoryObservationType(code, name, categories));
     }
 
-    // Add a new patient
     public void addPatient(String id, String name) throws Exception {
-        validateUniquePatientId(id);
-        patients[patientCount++] = new Patient(id, name);
-    }
-
-    // Add a measurement observation for a patient
-    public void addMeasurementObservation(String patientId, String observationCode, double value) throws Exception {
-        Patient patient = findPatientById(patientId);
-        MeasurementObservationType obsType = (MeasurementObservationType) findObservationTypeByCode(observationCode);
-        patient.addObservation(new MeasurementObservation(obsType, value));
-    }
-
-    // Add a category observation for a patient
-    public void addCategoryObservation(String patientId, String observationCode, String value) throws Exception {
-        Patient patient = findPatientById(patientId);
-        CategoryObservationType obsType = (CategoryObservationType) findObservationTypeByCode(observationCode);
-        patient.addObservation(new CategoryObservation(obsType, value));
-    }
-
-    // Helpers and validations...
-    private void validateUniqueObservationTypeCode(String code) throws Exception {
-        for (int i = 0; i < observationTypeCount; i++) {
-            if (observationTypes[i].getCode().equals(code)) {
-                throw new Exception("Observation type with this code already exists.");
+        for (Patient patient : patients) {
+            if (patient.getId().equals(id)) {
+                throw new Exception("Patient with this ID already exists");
             }
         }
+        patients.add(new Patient(id, name));
     }
 
-    private void validateUniquePatientId(String id) throws Exception {
-        for (int i = 0; i < patientCount; i++) {
-            if (patients[i].getId().equals(id)) {
-                throw new Exception("Patient with this ID already exists.");
-            }
-        }
+    public void addMeasurementObservation(String patientId, String observationTypeCode, double value) throws Exception {
+        Patient patient = findPatientById(patientId);
+        MeasurementObservationType type = (MeasurementObservationType) findObservationTypeByCode(observationTypeCode);
+        MeasurementObservation observation = new MeasurementObservation(type, value);
+        patient.addObservation(observation);
+    }
+
+    public void addCategoryObservation(String patientId, String observationTypeCode, String categoryValue) throws Exception {
+        Patient patient = findPatientById(patientId);
+        CategoryObservationType type = (CategoryObservationType) findObservationTypeByCode(observationTypeCode);
+        CategoryObservation observation = new CategoryObservation(type, categoryValue);
+        patient.addObservation(observation);
     }
 
     private Patient findPatientById(String id) throws Exception {
-        for (int i = 0; i < patientCount; i++) {
-            if (patients[i].getId().equals(id)) {
-                return patients[i];
+        for (Patient patient : patients) {
+            if (patient.getId().equals(id)) {
+                return patient;
             }
         }
-        throw new Exception("Patient not found.");
+        throw new Exception("No patient with this ID");
     }
 
     private ObservationType findObservationTypeByCode(String code) throws Exception {
-        for (int i = 0; i < observationTypeCount; i++) {
-            if (observationTypes[i].getCode().equals(code)) {
-                return observationTypes[i];
+        for (ObservationType type : observationTypes) {
+            if (type.getCode().equals(code)) {
+                return type;
             }
         }
-        throw new Exception("Observation type not found.");
+        throw new Exception("No observation type with this code");
+    }
+
+    public void saveData() throws IOException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("patient_data.ser"))) {
+            oos.writeObject(observationTypes);
+            oos.writeObject(patients);
+        }
+    }
+
+    public void loadData() throws IOException, ClassNotFoundException {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("patient_data.ser"))) {
+            observationTypes = (ArrayList<ObservationType>) ois.readObject();
+            patients = (ArrayList<Patient>) ois.readObject();
+        }
     }
 
     @Override
     public String toString() {
-        String result = "PatientRecordSystem [\nPatients:\n";
-        for (int i = 0; i < patientCount; i++) {
-            result += patients[i].toString() + "\n";
+        StringBuilder sb = new StringBuilder();
+        sb.append("===== PATIENT RECORD SYSTEM =====\n");
+        sb.append("OBSERVATION TYPES:\n");
+        for (ObservationType type : observationTypes) {
+            sb.append(">> ").append(type).append("\n");
         }
-        result += "ObservationTypes:\n";
-        for (int i = 0; i < observationTypeCount; i++) {
-            result += observationTypes[i].toString() + "\n";
+        sb.append("\nPATIENTS:\n");
+        for (Patient patient : patients) {
+            sb.append(">> ").append(patient).append("\n");
         }
-        result += "]";
-        return result;
+        return sb.toString();
     }
 }

@@ -4,7 +4,7 @@
  */
 package com.mycompany.assigment;
 import java.io.*;
-public class MeasurementObservationType extends ObservationType implements Serializable {
+public class MeasurementObservationType extends ObservationType {
     private String unit;
 
     public MeasurementObservationType(String code, String name, String unit) {
@@ -18,6 +18,6 @@ public class MeasurementObservationType extends ObservationType implements Seria
 
     @Override
     public String toString() {
-        return "MeasurementObservationType [code=" + getCode() + ", name=" + getName() + ", unit=" + unit + "]";
+        return "MeasurementObservationType[code: " + code + ", name: " + name + ", unit: " + unit + "]";
     }
 }

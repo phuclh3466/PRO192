@@ -8,8 +8,10 @@ import java.io.*;
  *
  * @author PC
  */
+import java.io.Serializable;
+
 public abstract class Observation implements Serializable {
-    private ObservationType observationType;
+    protected ObservationType observationType;
 
     public Observation(ObservationType observationType) {
         this.observationType = observationType;
@@ -19,5 +21,6 @@ public abstract class Observation implements Serializable {
         return observationType;
     }
 
+    @Override
     public abstract String toString();
 }
